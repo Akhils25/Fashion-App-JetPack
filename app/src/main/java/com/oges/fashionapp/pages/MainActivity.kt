@@ -150,22 +150,30 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun HomeScreen() {
-        Text("Home Screen")
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Home Screen")
+        }
     }
 
     @Composable
     fun WishlistScreen() {
-        Text("Wishlist Screen")
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Wishlist Screen")
+        }
     }
 
     @Composable
     fun SearchScreen() {
-        Text("Search Screen")
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Search Screen")
+        }
     }
 
     @Composable
     fun SettingScreen() {
-        Text("Setting Screen")
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Setting Screen")
+        }
     }
 
     @Composable
