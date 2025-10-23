@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -39,6 +38,7 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val label
     object Wishlist : BottomNavScreen("wishlist", Icons.Default.Favorite, "Wishlist")
     object Search : BottomNavScreen("search", Icons.Default.Search, "Search")
     object Setting : BottomNavScreen("setting", Icons.Default.Settings, "Setting")
+    object Cart : BottomNavScreen("cart", Icons.Default.ShoppingCart, "Cart")
 }
 
 
@@ -54,9 +54,11 @@ class MainActivity : ComponentActivity() {
 
                 val showBottomBar = currentRoute != "SplashPage"
 
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                ) {
 
                     NavHost(
                         navController = navController,
@@ -68,14 +70,15 @@ class MainActivity : ComponentActivity() {
                         composable(BottomNavScreen.Wishlist.route) { WishlistScreen() }
                         composable(BottomNavScreen.Search.route) { SearchScreen() }
                         composable(BottomNavScreen.Setting.route) { SettingScreen() }
+                        composable(BottomNavScreen.Cart.route) { CartScreen() }
                     }
 
                     if (showBottomBar) {
+
                         BottomAppBar(
                             containerColor = Color.White,
                             tonalElevation = 10.dp,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
+                            modifier = Modifier.align(Alignment.BottomCenter)
                         ) {
                             val items = listOf(
                                 BottomNavScreen.Home,
@@ -84,7 +87,7 @@ class MainActivity : ComponentActivity() {
                                 BottomNavScreen.Setting
                             )
                             items.forEachIndexed { index, screen ->
-                                if (index == 2) Spacer(modifier = Modifier.weight(1f)) // Space for FAB
+                                if (index == 2) Spacer(modifier = Modifier.weight(1f))
                                 val selected = currentRoute == screen.route
                                 BottomNavigationItem(
                                     icon = {
@@ -115,10 +118,19 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
+                        val isFabSelected = currentRoute == BottomNavScreen.Cart.route
                         FloatingActionButton(
-                            onClick = { /* TODO */ },
-                            containerColor = Color.White,
-                            contentColor = Color.Black,
+                            onClick = {
+                                navController.navigate(BottomNavScreen.Cart.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            containerColor = if (isFabSelected) Color.Red else Color.White,
+                            contentColor = if (isFabSelected) Color.White else Color.Black,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .offset(y = (-28).dp)
@@ -130,71 +142,31 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun BottomNavBar(navController: NavHostController) {
-    val items = listOf(
-        BottomNavScreen.Home,
-        BottomNavScreen.Wishlist,
-        BottomNavScreen.Search,
-        BottomNavScreen.Setting
-    )
+    @Composable
+    fun HomeScreen() {
+        Text("Home Screen")
+    }
 
-    BottomAppBar(
-        containerColor = Color.White
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+    @Composable
+    fun WishlistScreen() {
+        Text("Wishlist Screen")
+    }
 
-        items.forEachIndexed { index, screen ->
-            if (index == 2) Spacer(modifier = Modifier.weight(1f))
-            val selected = currentRoute == screen.route
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        imageVector = screen.icon,
-                        contentDescription = screen.label,
-                        tint = if (selected) Color.Red else Color.Black
-                    )
-                },
-                label = {
-                    Text(
-                        text = screen.label,
-                        fontSize = 12.sp,
-                        color = if (selected) Color.Red else Color.Black
-                    )
-                },
-                selected = selected,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
+    @Composable
+    fun SearchScreen() {
+        Text("Search Screen")
+    }
+
+    @Composable
+    fun SettingScreen() {
+        Text("Setting Screen")
+    }
+
+    @Composable
+    fun CartScreen() {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Cart Screen")
         }
     }
-}
-
-
-@Composable
-fun HomeScreen() {
-    Text("Home Screen")
-}
-
-@Composable
-fun WishlistScreen() {
-    Text("Wishlist Screen")
-}
-
-@Composable
-fun SearchScreen() {
-    Text("Search Screen")
-}
-
-@Composable
-fun SettingScreen() {
-    Text("Setting Screen")
 }
