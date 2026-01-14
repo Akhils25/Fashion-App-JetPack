@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         composable("SplashPage") { SplashPage(navController = navController) }
-                        composable(BottomNavScreen.Home.route) { HomeScreen() }
+                        composable(BottomNavScreen.Home.route) { HomeScreen(navController = navController) }
                         composable(BottomNavScreen.Wishlist.route) { WishlistScreen() }
                         composable(BottomNavScreen.Search.route) { SearchScreen() }
                         composable(BottomNavScreen.Setting.route) { SettingScreen() }
@@ -145,13 +145,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-
-    @Composable
-    fun HomeScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Home Screen")
         }
     }
 
