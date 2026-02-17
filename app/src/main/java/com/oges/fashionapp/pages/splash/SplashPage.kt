@@ -1,4 +1,4 @@
-package com.oges.fashionapp.pages
+package com.oges.fashionapp.pages.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.R
+import com.oges.fashionapp.pages.BottomNavScreen
 import kotlinx.coroutines.delay
 
 @Composable

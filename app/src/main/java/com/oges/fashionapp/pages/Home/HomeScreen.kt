@@ -1,4 +1,4 @@
-package com.oges.fashionapp.pages
+package com.oges.fashionapp.pages.Home
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

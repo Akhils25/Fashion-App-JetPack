@@ -34,6 +34,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.oges.fashionapp.pages.Home.HomeScreen
+import com.oges.fashionapp.pages.splash.SplashPage
 import com.oges.fashionapp.ui.theme.FashionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
