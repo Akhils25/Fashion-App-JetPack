@@ -23,9 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.R
 import kotlinx.coroutines.delay
 
@@ -106,4 +108,12 @@ fun SplashPage(navController: NavHostController) {
             Divider(modifier = Modifier.fillMaxWidth(), 20.dp, Color.Transparent)
         }
     }
+}
+
+
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+fun ShowScreen() {
+    val dummyNavController = rememberNavController()
+    SplashPage(navController = dummyNavController)
 }
