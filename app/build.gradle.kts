@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -75,4 +77,7 @@ dependencies {
     implementation ("androidx.compose.material:material:1.6.0")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.6.0")
     implementation ("androidx.navigation:navigation-compose:2.7.0")
+
+    implementation ("com.google.dagger:hilt-android:2.57.1")
+    ksp ("com.google.dagger:hilt-compiler:2.57.1")
 }
