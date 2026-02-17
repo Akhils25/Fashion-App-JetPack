@@ -35,6 +35,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.ui.theme.FashionAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val label: String) {
     object Home : BottomNavScreen("home", Icons.Default.Home, "Home")
@@ -44,7 +45,7 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val label
     object Cart : BottomNavScreen("cart", Icons.Default.ShoppingCart, "Cart")
 }
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
