@@ -21,7 +21,6 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +34,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.pages.Home.HomeScreen
+import com.oges.fashionapp.pages.Search.SearchScreen
+import com.oges.fashionapp.pages.cart.CartScreen
+import com.oges.fashionapp.pages.settings.SettingsScreen
 import com.oges.fashionapp.pages.splash.SplashPage
+import com.oges.fashionapp.pages.wishList.WishListScreen
 import com.oges.fashionapp.ui.theme.FashionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,10 +76,10 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("SplashPage") { SplashPage(navController = navController) }
                         composable(BottomNavScreen.Home.route) { HomeScreen(navController = navController) }
-                        composable(BottomNavScreen.Wishlist.route) { WishlistScreen() }
-                        composable(BottomNavScreen.Search.route) { SearchScreen() }
-                        composable(BottomNavScreen.Setting.route) { SettingScreen() }
-                        composable(BottomNavScreen.Cart.route) { CartScreen() }
+                        composable(BottomNavScreen.Wishlist.route) { WishListScreen(navController = navController) }
+                        composable(BottomNavScreen.Search.route) { SearchScreen(navController = navController) }
+                        composable(BottomNavScreen.Setting.route) { SettingsScreen(navController = navController) }
+                        composable(BottomNavScreen.Cart.route) { CartScreen(navController = navController) }
                     }
 
                     if (showBottomBar) {
@@ -148,34 +151,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-
-    @Composable
-    fun WishlistScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Wishlist Screen")
-        }
-    }
-
-    @Composable
-    fun SearchScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Search Screen")
-        }
-    }
-
-    @Composable
-    fun SettingScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Setting Screen")
-        }
-    }
-
-    @Composable
-    fun CartScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Cart Screen")
         }
     }
 }
