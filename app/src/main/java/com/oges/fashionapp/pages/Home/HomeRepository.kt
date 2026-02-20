@@ -2,24 +2,32 @@ package com.oges.fashionapp.pages.Home
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.oges.fashionapp.model.CategoryListingModel
 import com.oges.fashionapp.model.ProductListingModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val gson: Gson
 ) {
-    suspend fun getLocalProducts(): Result<List<ProductListingModel.Product>> {
-        return withContext(Dispatchers.IO) {
-            runCatching {
-                val jsonString = context.assets.open("products.json").use { inputStream ->
-                    inputStream.bufferedReader().use { it.readText() }
-                }
-                val response = Gson().fromJson(jsonString, ProductListingModel::class.java)
-                response.products ?: emptyList()
-            }
+    private inline fun <reified T> getListFromAssets(fileName: String): List<T> {
+        return try {
+            val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+            val type = object : TypeToken<List<T>>() {}.type
+            gson.fromJson(jsonString, type)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
+    }
+
+    fun getProducts(): List<ProductListingModel.Product> {
+        return getListFromAssets("products.json")
+    }
+
+    fun getCategories(): List<CategoryListingModel> {
+        return getListFromAssets("categories.json")
     }
 }

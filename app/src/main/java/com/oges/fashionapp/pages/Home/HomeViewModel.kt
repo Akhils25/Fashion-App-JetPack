@@ -26,15 +26,7 @@ class HomeViewModel @Inject constructor(
 
     private fun loadProducts() {
         _isLoading.value = true
-        viewModelScope.launch {
-            val result = repository.getLocalProducts()
-            _isLoading.value = false
-
-            result.onSuccess {
-                _products.value = it
-            }.onFailure {
-                // Handle error
-            }
-        }
+        _products.value = repository.getProducts()
+        _isLoading.value = false
     }
 }
