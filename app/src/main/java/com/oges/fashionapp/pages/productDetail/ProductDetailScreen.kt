@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.oges.fashionapp.ui.theme.FashionAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,9 +73,11 @@ fun ProductDetailScreen(navController: NavHostController) {
         ) {
             HeaderActions(navController)
 
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            ) {
                 Image(
                     painter = rememberAsyncImagePainter("https://images.unsplash.com/photo-1542291026-7eec264c27ff"),
                     contentDescription = null,
@@ -237,7 +240,7 @@ fun HeaderActions(navController: NavController) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 8.dp, vertical = 0.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(
@@ -268,12 +271,8 @@ fun FeatureBadge(label: String, icon: androidx.compose.ui.graphics.vector.ImageV
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewProductDetailScreen() {
-    // We create a mock navController for the preview environment
     val navController = androidx.navigation.compose.rememberNavController()
-
-    // Wrap in your app's theme so colors and fonts look correct
-    // Replace 'FashionAppTheme' with the actual theme name in your ui.theme package
-    com.oges.fashionapp.ui.theme.FashionAppTheme {
+    FashionAppTheme {
         ProductDetailScreen(navController = navController)
     }
 }
