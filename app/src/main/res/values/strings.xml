@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FashionApp</string>
+    <string name="size">Size: %1$s</string>
+    <string name="product_details">Product Details</string>
+    <string name="go_to_cart">Go to cart</string>
+    <string name="all_featured">All Featured</string>
+    <string name="trending_products">Trending Products</string>
+    <string name="view_all">View all →</string>
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="summer_25_collections">Summer\' 25 Collections</string>
+    <string name="deal_of_the_day">Deal of the Day</string>
+    <string name="search_any_product">Search any Product..</string>
+    <string name="shop_now">Shop Now →</string>
 </resources>

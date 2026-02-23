@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.R
 import com.oges.fashionapp.pages.BottomNavScreen
+import com.oges.fashionapp.ui.theme.Red
 import kotlinx.coroutines.delay
 
 @Composable
@@ -92,7 +93,7 @@ fun SplashPage(navController: NavHostController) {
                     .wrapContentHeight()
                     .padding(horizontal = 32.dp)
                     .background(
-                        color = Color(0xFFFF2B55),
+                        color = Red,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clickable { },

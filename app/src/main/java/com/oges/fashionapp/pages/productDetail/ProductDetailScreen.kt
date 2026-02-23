@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +55,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.oges.fashionapp.R
+import com.oges.fashionapp.ui.theme.CardBackground
+import com.oges.fashionapp.ui.theme.DarkBlue
+import com.oges.fashionapp.ui.theme.DarkYellow
 import com.oges.fashionapp.ui.theme.FashionAppTheme
+import com.oges.fashionapp.ui.theme.Green
+import com.oges.fashionapp.ui.theme.ReddishPink
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,7 +109,7 @@ fun ProductDetailScreen(navController: NavHostController) {
             }
 
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Size: $selectedSize", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.size, selectedSize), fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(sizes) { size ->
@@ -126,14 +133,14 @@ fun ProductDetailScreen(navController: NavHostController) {
                         Icon(
                             Icons.Default.Star,
                             null,
-                            tint = Color(0xFFFFB400),
+                            tint = DarkYellow,
                             modifier = Modifier.size(16.dp)
                         )
                     }
                     Icon(
                         Icons.Default.Star,
                         null,
-                        tint = Color(0xFFFFB400),
+                        tint = DarkYellow,
                         modifier = Modifier.size(16.dp)
                     )
                     Text(" 56,890", fontSize = 12.sp, color = Color.LightGray)
@@ -147,10 +154,10 @@ fun ProductDetailScreen(navController: NavHostController) {
                         style = androidx.compose.ui.text.TextStyle(textDecoration = TextDecoration.LineThrough)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("50% Off", color = Color(0xFFFD6E87), fontWeight = FontWeight.Bold)
+                    Text("50% Off", color = ReddishPink, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Product Details", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.product_details), fontWeight = FontWeight.Bold)
                 Text(
                     "Perhaps the most iconic sneaker of all-time, this original 'Chicago' colorway is the cornerstone to any sneaker collection...",
                     fontSize = 13.sp, color = Color.DarkGray, lineHeight = 18.sp
@@ -164,7 +171,7 @@ fun ProductDetailScreen(navController: NavHostController) {
                     FeatureBadge("Return Policy", Icons.Default.Star)
                 }
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFD9E1)),
+                    colors = CardDefaults.cardColors(containerColor = CardBackground),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -185,10 +192,10 @@ fun SizeChip(size: String, isSelected: Boolean, onClick: () -> Unit) {
     OutlinedCard(
         onClick = onClick,
         colors = CardDefaults.outlinedCardColors(
-            containerColor = if (isSelected) Color(0xFFFD6E87) else Color.White,
+            containerColor = if (isSelected) ReddishPink else Color.White,
             contentColor = if (isSelected) Color.White else Color.Black
         ),
-        border = BorderStroke(1.dp, if (isSelected) Color(0xFFFD6E87) else Color.LightGray),
+        border = BorderStroke(1.dp, if (isSelected) ReddishPink else Color.LightGray),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
@@ -213,19 +220,19 @@ fun StickyBottomActions() {
             modifier = Modifier
                 .weight(1f)
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E5BFF)),
+            colors = ButtonDefaults.buttonColors(containerColor = DarkBlue),
             shape = RoundedCornerShape(8.dp)
         ) {
             Icon(Icons.Default.ShoppingCart, null)
             Spacer(Modifier.width(8.dp))
-            Text("Go to cart")
+            Text(stringResource(R.string.go_to_cart))
         }
         Button(
             onClick = {},
             modifier = Modifier
                 .weight(1f)
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF56D18F)),
+            colors = ButtonDefaults.buttonColors(containerColor = Green),
             shape = RoundedCornerShape(8.dp)
         ) {
             Icon(Icons.Default.Star, null)

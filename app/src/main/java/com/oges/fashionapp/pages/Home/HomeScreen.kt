@@ -49,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.oges.fashionapp.R
+import com.oges.fashionapp.ui.theme.Background
+import com.oges.fashionapp.ui.theme.ReddishPink
+import com.oges.fashionapp.ui.theme.SkyBlue
+import com.oges.fashionapp.ui.theme.Yellow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +74,7 @@ fun HomeScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFFFDFDFD))
+                .background(color = Background)
         ) {
             item { SearchSection() }
 
@@ -81,7 +86,11 @@ fun HomeScreen(navController: NavHostController) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("All Featured", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Text(
+                        stringResource(R.string.all_featured),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         FilterButton(text = "Sort", icon = Icons.Default.Menu)
                         FilterButton(text = "Filter", icon = Icons.Default.Refresh)
@@ -163,7 +172,7 @@ fun TrendingBanner() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFD6E87)), // Coral Red/Pink
+        colors = CardDefaults.cardColors(containerColor = ReddishPink),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -175,7 +184,7 @@ fun TrendingBanner() {
         ) {
             Column {
                 Text(
-                    text = "Trending Products",
+                    text = stringResource(R.string.trending_products),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -206,7 +215,7 @@ fun TrendingBanner() {
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
                 contentPadding = PaddingValues(horizontal = 12.dp)
             ) {
-                Text("View all →", fontSize = 12.sp)
+                Text(stringResource(R.string.view_all), fontSize = 12.sp)
             }
         }
     }
@@ -224,7 +233,7 @@ fun SummerSaleBanner() {
                 .fillMaxWidth()
                 .height(200.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFDE68A))
+            colors = CardDefaults.cardColors(containerColor = Yellow)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 AsyncImage(
@@ -234,7 +243,6 @@ fun SummerSaleBanner() {
                     contentScale = ContentScale.FillBounds
                 )
 
-                // Bottom content row
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -246,12 +254,12 @@ fun SummerSaleBanner() {
                 ) {
                     Column {
                         Text(
-                            text = "New Arrivals",
+                            text = stringResource(R.string.new_arrivals),
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
                         )
                         Text(
-                            text = "Summer' 25 Collections",
+                            text = stringResource(R.string.summer_25_collections),
                             fontSize = 14.sp,
                             color = Color.DarkGray
                         )
@@ -259,10 +267,10 @@ fun SummerSaleBanner() {
 
                     Button(
                         onClick = {},
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFD6E87)),
+                        colors = ButtonDefaults.buttonColors(containerColor = ReddishPink),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text("View all →", color = Color.White)
+                        Text(stringResource(R.string.view_all), color = Color.White)
                     }
                 }
             }
@@ -275,7 +283,7 @@ fun DealOfTheDaySection(navController: NavHostController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF4C86F9)),
+            colors = CardDefaults.cardColors(containerColor = SkyBlue),
             shape = RoundedCornerShape(8.dp)
         ) {
             Row(
@@ -286,7 +294,11 @@ fun DealOfTheDaySection(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("Deal of the Day", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(
+                        stringResource(R.string.deal_of_the_day),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Default.AccountBox,
@@ -304,7 +316,7 @@ fun DealOfTheDaySection(navController: NavHostController) {
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
-                    Text("View all →", color = Color.White, fontSize = 12.sp)
+                    Text(stringResource(R.string.view_all), color = Color.White, fontSize = 12.sp)
                 }
             }
         }
@@ -354,7 +366,7 @@ fun ProductCard(navController: NavHostController) {
                         style = androidx.compose.ui.text.TextStyle(textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough)
                     )
                     Spacer(Modifier.width(4.dp))
-                    Text("40%Off", color = Color(0xFFFD909E), fontSize = 10.sp)
+                    Text("40%Off", color = ReddishPink, fontSize = 10.sp)
                 }
             }
         }
@@ -402,18 +414,22 @@ fun StylishHeader() {
         Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(28.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            //Icon(Icons.Default.Adjust, contentDescription = null, tint = Color(0xFF4C86F9))
             Spacer(Modifier.width(8.dp))
             Text(
                 text = "Stylish",
-                color = Color(0xFF4C86F9),
+                color = SkyBlue,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
         }
 
         Surface(shape = CircleShape, modifier = Modifier.size(40.dp)) {
-            // AsyncImage(model = "https://example.com/p.jpg", contentDescription = null)
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Local Image",
+                modifier = Modifier.size(100.dp),
+                contentScale = ContentScale.Crop
+            )
         }
     }
 }
@@ -427,9 +443,13 @@ fun SearchSection() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        placeholder = { Text("Search any Product..", color = Color.LightGray) },
+        placeholder = {
+            Text(
+                stringResource(R.string.search_any_product),
+                color = Color.LightGray
+            )
+        },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-        //trailingIcon = { Icon(Icons.Default.Mic, contentDescription = null) },
         shape = RoundedCornerShape(12.dp),
         singleLine = true,
     )
@@ -444,7 +464,12 @@ fun CategoryItem(name: String, image: Any) {
             shadowElevation = 4.dp,
             color = Color.White
         ) {
-            //AsyncImage(model = image, contentDescription = name, contentScale = ContentScale.Crop)
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Local Image",
+                modifier = Modifier.size(100.dp),
+                contentScale = ContentScale.Crop
+            )
         }
         Text(text = name, fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
     }
@@ -458,7 +483,7 @@ fun StylishBanner(offer: String) {
             .height(180.dp)
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFD909E))
+        colors = CardDefaults.cardColors(containerColor = ReddishPink)
     ) {
         Row(
             modifier = Modifier
@@ -475,7 +500,7 @@ fun StylishBanner(offer: String) {
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                 ) {
-                    Text("Shop Now →")
+                    Text(stringResource(R.string.shop_now))
                 }
             }
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomEnd) {
