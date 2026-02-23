@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -261,5 +262,18 @@ fun FeatureBadge(label: String, icon: androidx.compose.ui.graphics.vector.ImageV
     ) {
         Icon(icon, null, modifier = Modifier.size(14.dp), tint = Color.Gray)
         Text(label, fontSize = 10.sp, color = Color.Gray, modifier = Modifier.padding(start = 4.dp))
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewProductDetailScreen() {
+    // We create a mock navController for the preview environment
+    val navController = androidx.navigation.compose.rememberNavController()
+
+    // Wrap in your app's theme so colors and fonts look correct
+    // Replace 'FashionAppTheme' with the actual theme name in your ui.theme package
+    com.oges.fashionapp.ui.theme.FashionAppTheme {
+        ProductDetailScreen(navController = navController)
     }
 }
