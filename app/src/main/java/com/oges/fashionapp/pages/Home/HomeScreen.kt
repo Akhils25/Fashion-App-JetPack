@@ -3,6 +3,7 @@ package com.oges.fashionapp.pages.Home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,10 +71,8 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(paddingValues)
                 .background(Color(0xFFFDFDFD))
         ) {
-            // 1. Search Section
             item { SearchSection() }
 
-            // 2. Featured Header with Sort/Filter
             item {
                 Row(
                     modifier = Modifier
@@ -90,7 +89,6 @@ fun HomeScreen(navController: NavHostController) {
                 }
             }
 
-            // 3. Horizontal Categories
             item {
                 val categories = listOf("Beauty", "Fashion", "Kids", "Mens", "Womens")
                 LazyRow(
@@ -104,23 +102,22 @@ fun HomeScreen(navController: NavHostController) {
                 }
             }
 
-            // 4. Stylish Banner
             item {
                 StylishBanner(offer = "50-40% OFF")
             }
 
-            // Add extra space at the bottom so content doesn't get cut off
             item { Spacer(modifier = Modifier.height(20.dp)) }
 
             item {
-                DealOfTheDaySection()
+                DealOfTheDaySection(navController)
             }
             item { SpecialOfferSection() }
+
             item {
                 SummerSaleBanner()
             }
             item {
-                ScrollableProductRow()
+                ScrollableProductRow(navController)
             }
             item {
                 TrendingBanner()
@@ -132,16 +129,15 @@ fun HomeScreen(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScrollableProductRow() {
+fun ScrollableProductRow(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxWidth()) {
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(5) { ProductCard() }
+            items(5) { ProductCard(navController) }
         }
 
-        // The Floating Arrow Button
         Surface(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
@@ -150,7 +146,7 @@ fun ScrollableProductRow() {
             shape = CircleShape,
             color = Color.White,
             shadowElevation = 4.dp,
-            onClick = { /* Scroll Logic */ }
+            onClick = { }
         ) {
             Icon(
                 imageVector = Icons.Default.Menu,
@@ -204,7 +200,7 @@ fun TrendingBanner() {
             }
 
             OutlinedButton(
-                onClick = { /* TODO */ },
+                onClick = { },
                 border = BorderStroke(1.dp, Color.White),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
@@ -228,12 +224,11 @@ fun SummerSaleBanner() {
                 .fillMaxWidth()
                 .height(200.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFDE68A)) // Light Yellow
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFDE68A))
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                // Background Illustration
                 AsyncImage(
-                    model = R.drawable.spalsh_bg_img, // Replace with your actual graphic
+                    model = R.drawable.spalsh_bg_img,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.FillBounds
@@ -263,7 +258,7 @@ fun SummerSaleBanner() {
                     }
 
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = {},
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFD6E87)),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -276,9 +271,8 @@ fun SummerSaleBanner() {
 }
 
 @Composable
-fun DealOfTheDaySection() {
+fun DealOfTheDaySection(navController: NavHostController) {
     Column(modifier = Modifier.padding(16.dp)) {
-        // Blue Header
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = Color(0xFF4C86F9)),
@@ -315,28 +309,29 @@ fun DealOfTheDaySection() {
             }
         }
 
-        // Horizontal Product List
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(top = 16.dp)
         ) {
-            items(2) { // Replace with real data
-                ProductCard()
+            items(2) {
+                ProductCard(navController)
             }
         }
     }
 }
 
 @Composable
-fun ProductCard() {
+fun ProductCard(navController: NavHostController) {
     Card(
-        modifier = Modifier.width(170.dp),
+        modifier = Modifier
+            .width(170.dp)
+            .clickable { navController.navigate("product_details") },
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column {
             AsyncImage(
-                model = R.drawable.ic_launcher_foreground, // Replace with image URL
+                model = R.drawable.ic_launcher_foreground,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -407,7 +402,6 @@ fun StylishHeader() {
         Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(28.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // Placeholder for Logo
             //Icon(Icons.Default.Adjust, contentDescription = null, tint = Color(0xFF4C86F9))
             Spacer(Modifier.width(8.dp))
             Text(
@@ -438,7 +432,6 @@ fun SearchSection() {
         //trailingIcon = { Icon(Icons.Default.Mic, contentDescription = null) },
         shape = RoundedCornerShape(12.dp),
         singleLine = true,
-        // Adding a slight shadow effect via a Modifier shadow if needed
     )
 }
 
@@ -485,7 +478,6 @@ fun StylishBanner(offer: String) {
                     Text("Shop Now →")
                 }
             }
-            // Add a placeholder for the girl image
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomEnd) {
                 Icon(
                     Icons.Default.ShoppingCart,

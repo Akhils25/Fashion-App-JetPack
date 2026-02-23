@@ -36,7 +36,7 @@ import kotlinx.coroutines.delay
 fun SplashPage(navController: NavHostController) {
 
     LaunchedEffect(key1 = true) {
-        delay(2000) // 2 seconds
+        delay(2000)
         navController.navigate(BottomNavScreen.Home.route) {
             popUpTo("SplashPage") { inclusive = true }
         }

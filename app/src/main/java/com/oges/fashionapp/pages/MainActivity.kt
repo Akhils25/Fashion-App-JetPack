@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.oges.fashionapp.pages.Home.HomeScreen
 import com.oges.fashionapp.pages.Search.SearchScreen
 import com.oges.fashionapp.pages.cart.CartScreen
+import com.oges.fashionapp.pages.productDetail.ProductDetailScreen
 import com.oges.fashionapp.pages.settings.SettingsScreen
 import com.oges.fashionapp.pages.splash.SplashPage
 import com.oges.fashionapp.pages.wishList.WishListScreen
@@ -61,7 +62,8 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val showBottomBar = currentRoute != "SplashPage"
+                val showBottomBar =
+                    currentRoute != "SplashPage" && currentRoute != "product_details"
 
                 Box(
                     modifier = Modifier
@@ -75,6 +77,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         composable("SplashPage") { SplashPage(navController = navController) }
+                        composable("product_details") { ProductDetailScreen(navController) }
                         composable(BottomNavScreen.Home.route) { HomeScreen(navController = navController) }
                         composable(BottomNavScreen.Wishlist.route) { WishListScreen(navController = navController) }
                         composable(BottomNavScreen.Search.route) { SearchScreen(navController = navController) }
