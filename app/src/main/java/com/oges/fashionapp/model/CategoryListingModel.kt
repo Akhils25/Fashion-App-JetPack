@@ -8,7 +8,7 @@ data class CategoryListingModel(
     @SerializedName("catName")
     val catName: String,
     @SerializedName("catImage")
-    val catImage: String,
+    val catImage: Int,
     @SerializedName("catRemarks")
     val catRemarks: String
 )

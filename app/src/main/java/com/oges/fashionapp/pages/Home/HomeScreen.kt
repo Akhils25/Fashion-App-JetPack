@@ -58,6 +58,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.oges.fashionapp.R
+import com.oges.fashionapp.model.CategoryListingModel
 import com.oges.fashionapp.ui.theme.Background
 import com.oges.fashionapp.ui.theme.ReddishPink
 import com.oges.fashionapp.ui.theme.SkyBlue
@@ -99,14 +100,20 @@ fun HomeScreen(navController: NavHostController) {
             }
 
             item {
-                val categories = listOf("Beauty", "Fashion", "Kids", "Mens", "Womens")
+                val categories = listOf(
+                    CategoryListingModel("c1", "Beauty", R.drawable.ic_beauty_img, ""),
+                    CategoryListingModel("c2", "Fashion", R.drawable.ic_flash_img, ""),
+                    CategoryListingModel("c3", "Kids", R.drawable.ic_kids_img, ""),
+                    CategoryListingModel("c4", "Mens", R.drawable.ic_men_img, ""),
+                    CategoryListingModel("c5", "Women", R.drawable.ic_women_img, "")
+                )
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.padding(bottom = 16.dp)
                 ) {
-                    items(categories) { name ->
-                        CategoryItem(name = name, image = R.drawable.ic_launcher_background)
+                    items(categories) { item ->
+                        CategoryItem(item)
                     }
                 }
             }
@@ -415,17 +422,18 @@ fun StylishHeader() {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(Modifier.width(8.dp))
-            Text(
-                text = "Stylish",
-                color = SkyBlue,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo_fashion),
+                contentDescription = "Local Image",
+                modifier = Modifier
+                    .width(110.dp)
+                    .height(35.dp)
             )
         }
 
         Surface(shape = CircleShape, modifier = Modifier.size(40.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = R.drawable.ic_profile_img),
                 contentDescription = "Local Image",
                 modifier = Modifier.size(100.dp),
                 contentScale = ContentScale.Crop
@@ -456,7 +464,7 @@ fun SearchSection() {
 }
 
 @Composable
-fun CategoryItem(name: String, image: Any) {
+fun CategoryItem(item: CategoryListingModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
             shape = CircleShape,
@@ -465,13 +473,13 @@ fun CategoryItem(name: String, image: Any) {
             color = Color.White
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = item.catImage),
                 contentDescription = "Local Image",
                 modifier = Modifier.size(100.dp),
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = name, fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
+        Text(text = item.catName, fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
     }
 }
 
