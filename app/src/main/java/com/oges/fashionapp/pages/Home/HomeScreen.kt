@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -44,6 +45,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,79 +69,90 @@ import com.oges.fashionapp.ui.theme.Yellow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+    val products by viewModel.products.observeAsState(initial = emptyList())
+    val isLoading by viewModel.isLoading.observeAsState(initial = false)
     Scaffold(
         topBar = { StylishHeader() },
         bottomBar = { StylishBottomNav() }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(color = Background)
-        ) {
-            item { SearchSection() }
+        if (isLoading) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = ReddishPink)
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(color = Background)
+            ) {
+                item { SearchSection() }
 
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        stringResource(R.string.all_featured),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            stringResource(R.string.all_featured),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            FilterButton(text = "Sort", icon = Icons.Default.Menu)
+                            FilterButton(text = "Filter", icon = Icons.Default.Refresh)
+                        }
+                    }
+                }
+
+                item {
+                    val categories = listOf(
+                        CategoryListingModel("c1", "Beauty", R.drawable.ic_beauty_img, ""),
+                        CategoryListingModel("c2", "Fashion", R.drawable.ic_flash_img, ""),
+                        CategoryListingModel("c3", "Kids", R.drawable.ic_kids_img, ""),
+                        CategoryListingModel("c4", "Mens", R.drawable.ic_men_img, ""),
+                        CategoryListingModel("c5", "Women", R.drawable.ic_women_img, "")
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        FilterButton(text = "Sort", icon = Icons.Default.Menu)
-                        FilterButton(text = "Filter", icon = Icons.Default.Refresh)
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+                        items(categories) { item ->
+                            CategoryItem(item)
+                        }
                     }
                 }
-            }
 
-            item {
-                val categories = listOf(
-                    CategoryListingModel("c1", "Beauty", R.drawable.ic_beauty_img, ""),
-                    CategoryListingModel("c2", "Fashion", R.drawable.ic_flash_img, ""),
-                    CategoryListingModel("c3", "Kids", R.drawable.ic_kids_img, ""),
-                    CategoryListingModel("c4", "Mens", R.drawable.ic_men_img, ""),
-                    CategoryListingModel("c5", "Women", R.drawable.ic_women_img, "")
-                )
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(bottom = 16.dp)
-                ) {
-                    items(categories) { item ->
-                        CategoryItem(item)
-                    }
+                item {
+                    StylishBanner(offer = "50-40% OFF")
                 }
-            }
 
-            item {
-                StylishBanner(offer = "50-40% OFF")
-            }
+                item { Spacer(modifier = Modifier.height(20.dp)) }
 
-            item { Spacer(modifier = Modifier.height(20.dp)) }
+                item {
+                    DealOfTheDaySection(navController)
+                }
+                item { SpecialOfferSection() }
 
-            item {
-                DealOfTheDaySection(navController)
-            }
-            item { SpecialOfferSection() }
+                item {
+                    SummerSaleBanner()
+                }
+                item {
+                    ScrollableProductRow(navController)
+                }
+                item {
+                    TrendingBanner()
+                }
 
-            item {
-                SummerSaleBanner()
             }
-            item {
-                ScrollableProductRow(navController)
-            }
-            item {
-                TrendingBanner()
-            }
-
         }
     }
 }
