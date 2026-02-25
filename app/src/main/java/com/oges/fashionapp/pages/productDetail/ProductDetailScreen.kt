@@ -65,7 +65,7 @@ import com.oges.fashionapp.ui.theme.ReddishPink
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(navController: NavHostController) {
+fun ProductDetailScreen(navController: NavHostController, productId: String) {
     var selectedSize by remember { mutableStateOf("7 UK") }
     val sizes = listOf("6 UK", "7 UK", "8 UK", "9 UK", "10 UK")
 
@@ -280,6 +280,6 @@ fun FeatureBadge(label: String, icon: androidx.compose.ui.graphics.vector.ImageV
 fun PreviewProductDetailScreen() {
     val navController = androidx.navigation.compose.rememberNavController()
     FashionAppTheme {
-        ProductDetailScreen(navController = navController)
+        ProductDetailScreen(navController = navController, "")
     }
 }

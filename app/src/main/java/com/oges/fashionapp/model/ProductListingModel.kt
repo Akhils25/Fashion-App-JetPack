@@ -4,12 +4,8 @@ package com.oges.fashionapp.model
 import com.google.gson.annotations.SerializedName
 
 data class ProductListingModel(
-    @SerializedName("category")
-    val category: String,
-    @SerializedName("code")
-    val code: Int,
-    @SerializedName("products")
-    val products: List<Product>,
+    @SerializedName("product")
+    val product: List<Product>,
     @SerializedName("status")
     val status: String
 ) {

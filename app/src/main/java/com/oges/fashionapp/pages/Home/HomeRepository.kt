@@ -2,7 +2,6 @@ package com.oges.fashionapp.pages.Home
 
 import android.content.Context
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.oges.fashionapp.model.CategoryListingModel
 import com.oges.fashionapp.model.ProductListingModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -12,22 +11,26 @@ class HomeRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val gson: Gson
 ) {
-    private inline fun <reified T> getListFromAssets(fileName: String): List<T> {
+
+    fun getProducts(): List<ProductListingModel.Product> {
         return try {
-            val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-            val type = object : TypeToken<List<T>>() {}.type
-            gson.fromJson(jsonString, type)
+            val jsonString = context.assets.open("products.json").bufferedReader().use { it.readText() }
+            val response = gson.fromJson(jsonString, ProductListingModel::class.java)
+            val list = response?.product ?: emptyList()
+            list
         } catch (e: Exception) {
-            e.printStackTrace()
             emptyList()
         }
     }
 
-    fun getProducts(): List<ProductListingModel.Product> {
-        return getListFromAssets("products.json")
-    }
-
-    fun getCategories(): List<CategoryListingModel> {
-        return getListFromAssets("categories.json")
+    fun getCategories(): List<CategoryListingModel.Category> {
+        return try {
+            val jsonString = context.assets.open("categories.json").bufferedReader().use { it.readText() }
+            val response = gson.fromJson(jsonString, CategoryListingModel::class.java)
+            val list = response?.category ?: emptyList()
+            list
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 }

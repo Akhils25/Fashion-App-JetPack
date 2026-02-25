@@ -37,6 +37,7 @@ import com.oges.fashionapp.pages.Home.HomeScreen
 import com.oges.fashionapp.pages.Search.SearchScreen
 import com.oges.fashionapp.pages.cart.CartScreen
 import com.oges.fashionapp.pages.productDetail.ProductDetailScreen
+import com.oges.fashionapp.pages.productList.ProductListingScreen
 import com.oges.fashionapp.pages.settings.SettingsScreen
 import com.oges.fashionapp.pages.splash.SplashPage
 import com.oges.fashionapp.pages.wishList.WishListScreen
@@ -44,11 +45,11 @@ import com.oges.fashionapp.ui.theme.FashionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val label: String) {
-    object Home : BottomNavScreen("home", Icons.Default.Home, "Home")
-    object Wishlist : BottomNavScreen("wishlist", Icons.Default.Favorite, "Wishlist")
-    object Search : BottomNavScreen("search", Icons.Default.Search, "Search")
-    object Setting : BottomNavScreen("setting", Icons.Default.Settings, "Setting")
-    object Cart : BottomNavScreen("cart", Icons.Default.ShoppingCart, "Cart")
+    data object Home : BottomNavScreen("home", Icons.Default.Home, "Home")
+    data object Wishlist : BottomNavScreen("wishlist", Icons.Default.Favorite, "Wishlist")
+    data object Search : BottomNavScreen("search", Icons.Default.Search, "Search")
+    data object Setting : BottomNavScreen("setting", Icons.Default.Settings, "Setting")
+    data object Cart : BottomNavScreen("cart", Icons.Default.ShoppingCart, "Cart")
 }
 
 @AndroidEntryPoint
@@ -77,7 +78,18 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         composable("SplashPage") { SplashPage(navController = navController) }
-                        composable("product_details") { ProductDetailScreen(navController) }
+                        composable("product_details/{productId}") {
+                            val productId = navBackStackEntry?.arguments?.getString("productId") ?: ""
+                            ProductDetailScreen(
+                                navController, productId
+                            )
+                        }
+                        composable("product_listing/{categoryId}") {
+                            val categoryId = navBackStackEntry?.arguments?.getString("categoryId") ?: ""
+                            ProductListingScreen(
+                                navController, categoryId
+                            )
+                        }
                         composable(BottomNavScreen.Home.route) { HomeScreen(navController = navController) }
                         composable(BottomNavScreen.Wishlist.route) { WishListScreen(navController = navController) }
                         composable(BottomNavScreen.Search.route) { SearchScreen(navController = navController) }

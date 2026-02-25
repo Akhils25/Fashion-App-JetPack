@@ -95,8 +95,7 @@ fun SplashPage(navController: NavHostController) {
                     .background(
                         color = Red,
                         shape = RoundedCornerShape(12.dp)
-                    )
-                    .clickable { },
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

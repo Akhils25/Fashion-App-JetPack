@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,12 +59,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.oges.fashionapp.R
 import com.oges.fashionapp.model.CategoryListingModel
 import com.oges.fashionapp.model.ProductListingModel
+import com.oges.fashionapp.pages.StylishHeader
 import com.oges.fashionapp.ui.theme.Background
 import com.oges.fashionapp.ui.theme.ReddishPink
 import com.oges.fashionapp.ui.theme.SkyBlue
@@ -72,7 +76,7 @@ import com.oges.fashionapp.ui.theme.Yellow
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val products by viewModel.products.observeAsState(initial = emptyList())
     val category by viewModel.categories.observeAsState(initial = emptyList())
@@ -121,7 +125,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(bottom = 16.dp)
                     ) {
                         items(category) { item ->
-                            CategoryItem(item)
+                            CategoryItem(navController, item)
                         }
                     }
                 }
@@ -359,7 +363,11 @@ fun ProductCard(navController: NavHostController, product: ProductListingModel.P
     Card(
         modifier = Modifier
             .width(170.dp)
-            .clickable { navController.navigate("product_details") },
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = androidx.compose.material.ripple.rememberRipple(),
+                onClick = { navController.navigate("product_details/${product.productId}") }
+            ),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
@@ -380,7 +388,10 @@ fun ProductCard(navController: NavHostController, product: ProductListingModel.P
                     maxLines = 2,
                     color = Color.Gray
                 )
-                Text("${product.currency}${product.sellingPrice}", fontWeight = FontWeight.ExtraBold)
+                Text(
+                    "${product.currency}${product.sellingPrice}",
+                    fontWeight = FontWeight.ExtraBold
+                )
                 Row {
                     Text(
                         "${product.currency}${product.productMRP}",
@@ -388,7 +399,11 @@ fun ProductCard(navController: NavHostController, product: ProductListingModel.P
                         style = androidx.compose.ui.text.TextStyle(textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough)
                     )
                     Spacer(Modifier.width(4.dp))
-                    Text("${product.offerValues}${product.offerType}", color = ReddishPink, fontSize = 10.sp)
+                    Text(
+                        "${product.offerValues}${product.offerType}",
+                        color = ReddishPink,
+                        fontSize = 10.sp
+                    )
                 }
             }
         }
@@ -423,40 +438,6 @@ fun SpecialOfferSection() {
     }
 }
 
-@Composable
-fun StylishHeader() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(28.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Spacer(Modifier.width(8.dp))
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo_fashion),
-                contentDescription = "Local Image",
-                modifier = Modifier
-                    .width(110.dp)
-                    .height(35.dp)
-            )
-        }
-
-        Surface(shape = CircleShape, modifier = Modifier.size(40.dp)) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_profile_img),
-                contentDescription = "Local Image",
-                modifier = Modifier.size(100.dp),
-                contentScale = ContentScale.Crop
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchSection() {
@@ -478,19 +459,23 @@ fun SearchSection() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryItem(item: CategoryListingModel) {
+fun CategoryItem(navController: NavHostController, item: CategoryListingModel.Category) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
             shape = CircleShape,
-            modifier = Modifier.size(60.dp),
             shadowElevation = 4.dp,
-            color = Color.White
+            color = Color.White,
+            onClick = { navController.navigate("product_listing/${item.catId}") }
         ) {
-            Image(
-                painter = painterResource(id = item.catImage),
-                contentDescription = "Local Image",
-                modifier = Modifier.size(100.dp),
+            AsyncImage(
+                model = item.catImage,
+                contentDescription = "category Image",
+                modifier = Modifier
+                    .width(56.dp)
+                    .height(56.dp)
+                    .padding(8.dp),
                 contentScale = ContentScale.Crop
             )
         }
