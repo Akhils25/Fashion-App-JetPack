@@ -62,6 +62,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.oges.fashionapp.R
 import com.oges.fashionapp.model.CategoryListingModel
+import com.oges.fashionapp.model.ProductListingModel
 import com.oges.fashionapp.ui.theme.Background
 import com.oges.fashionapp.ui.theme.ReddishPink
 import com.oges.fashionapp.ui.theme.SkyBlue
@@ -74,6 +75,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val products by viewModel.products.observeAsState(initial = emptyList())
+    val category by viewModel.categories.observeAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.observeAsState(initial = false)
     Scaffold(
         topBar = { StylishHeader() },
@@ -113,19 +115,12 @@ fun HomeScreen(
                 }
 
                 item {
-                    val categories = listOf(
-                        CategoryListingModel("c1", "Beauty", R.drawable.ic_beauty_img, ""),
-                        CategoryListingModel("c2", "Fashion", R.drawable.ic_flash_img, ""),
-                        CategoryListingModel("c3", "Kids", R.drawable.ic_kids_img, ""),
-                        CategoryListingModel("c4", "Mens", R.drawable.ic_men_img, ""),
-                        CategoryListingModel("c5", "Women", R.drawable.ic_women_img, "")
-                    )
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.padding(bottom = 16.dp)
                     ) {
-                        items(categories) { item ->
+                        items(category) { item ->
                             CategoryItem(item)
                         }
                     }
@@ -138,7 +133,7 @@ fun HomeScreen(
                 item { Spacer(modifier = Modifier.height(20.dp)) }
 
                 item {
-                    DealOfTheDaySection(navController)
+                    DealOfTheDaySection(navController, products)
                 }
                 item { SpecialOfferSection() }
 
@@ -146,7 +141,7 @@ fun HomeScreen(
                     SummerSaleBanner()
                 }
                 item {
-                    ScrollableProductRow(navController)
+                    ScrollableProductRow(navController, products.reversed())
                 }
                 item {
                     TrendingBanner()
@@ -159,13 +154,16 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScrollableProductRow(navController: NavHostController) {
+fun ScrollableProductRow(
+    navController: NavHostController,
+    product: List<ProductListingModel.Product>
+) {
     Box(modifier = Modifier.fillMaxWidth()) {
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(5) { ProductCard(navController) }
+            items(product) { ProductCard(navController, it) }
         }
 
         Surface(
@@ -300,7 +298,10 @@ fun SummerSaleBanner() {
 }
 
 @Composable
-fun DealOfTheDaySection(navController: NavHostController) {
+fun DealOfTheDaySection(
+    navController: NavHostController,
+    product: List<ProductListingModel.Product>
+) {
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -346,15 +347,15 @@ fun DealOfTheDaySection(navController: NavHostController) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(top = 16.dp)
         ) {
-            items(2) {
-                ProductCard(navController)
+            items(product) {
+                ProductCard(navController, it)
             }
         }
     }
 }
 
 @Composable
-fun ProductCard(navController: NavHostController) {
+fun ProductCard(navController: NavHostController, product: ProductListingModel.Product) {
     Card(
         modifier = Modifier
             .width(170.dp)
@@ -364,7 +365,7 @@ fun ProductCard(navController: NavHostController) {
     ) {
         Column {
             AsyncImage(
-                model = R.drawable.ic_launcher_foreground,
+                model = product.productImage,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -372,22 +373,22 @@ fun ProductCard(navController: NavHostController) {
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.padding(8.dp)) {
-                Text("Women Printed Kurta", fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(product.productName, fontWeight = FontWeight.Bold, maxLines = 1)
                 Text(
-                    "Neque porro quisquam est qui dolorem ipsum quia",
+                    product.productRemarks,
                     fontSize = 10.sp,
                     maxLines = 2,
                     color = Color.Gray
                 )
-                Text("₹1500", fontWeight = FontWeight.ExtraBold)
+                Text("${product.currency}${product.sellingPrice}", fontWeight = FontWeight.ExtraBold)
                 Row {
                     Text(
-                        "₹2499",
+                        "${product.currency}${product.productMRP}",
                         fontSize = 10.sp,
                         style = androidx.compose.ui.text.TextStyle(textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough)
                     )
                     Spacer(Modifier.width(4.dp))
-                    Text("40%Off", color = ReddishPink, fontSize = 10.sp)
+                    Text("${product.offerValues}${product.offerType}", color = ReddishPink, fontSize = 10.sp)
                 }
             }
         }
