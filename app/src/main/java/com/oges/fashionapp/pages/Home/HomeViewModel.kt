@@ -31,14 +31,12 @@ class HomeViewModel @Inject constructor(
     private fun loadProducts() {
         _isLoading.value = true
         _products.value = repository.getProducts()
-        Log.e("ggf", repository.getProducts().toString())
         _isLoading.value = false
     }
 
     private fun loadCategories() {
         _isLoading.value = true
         _categories.value = repository.getCategories()
-        Log.e("ggf", repository.getCategories().toString())
         _isLoading.value = false
     }
 }
