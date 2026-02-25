@@ -58,22 +58,50 @@ fun ProductListingScreen(
 ) {
     val isLoading = false
     val product by viewModel.products.observeAsState(initial = emptyList())
-    Scaffold(topBar = { StylishHeader() }
-    ) { padding ->
+
+    Scaffold(topBar = { StylishHeader() }) { padding ->
         if (isLoading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = ReddishPink)
             }
         } else {
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .background(color = Background)
             ) {
-                item {
-                     ProductGridScreen(product)
-                }
+                ProductGridScreen(product)
+            }
+        }
+    }
+}
+
+@Composable
+fun ProductGridScreen(products: List<ProductListingModel.Product>) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Header with Count
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "${products.size} Items", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(), // It now has a bounded height!
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(products) { item ->
+                ProductListingCard(product = item)
             }
         }
     }
@@ -154,43 +182,6 @@ fun ProductListingCard(product: ProductListingModel.Product) {
                         modifier = Modifier.padding(start = 4.dp)
                     )
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun ProductGridScreen(products: List<ProductListingModel.Product>) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF9F9F9))
-    ) {
-        // Header with Count and Sort/Filter
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "52,082+ Items", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            Row {
-                //FilterChip(text = "Sort", icon = Icons.Default.Sort)
-                Spacer(modifier = Modifier.width(8.dp))
-                //FilterChip(text = "Filter", icon = Icons.Default.FilterList)
-            }
-        }
-
-        // The Grid
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(products) { product ->
-                ProductListingCard(product = product)
             }
         }
     }

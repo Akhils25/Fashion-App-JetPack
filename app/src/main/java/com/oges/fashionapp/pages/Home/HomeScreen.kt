@@ -109,7 +109,8 @@ fun HomeScreen(
                         Text(
                             stringResource(R.string.all_featured),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = Color.Black
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             FilterButton(text = "Sort", icon = Icons.Default.Menu)
@@ -156,7 +157,6 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScrollableProductRow(
     navController: NavHostController,
@@ -168,23 +168,6 @@ fun ScrollableProductRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(product) { ProductCard(navController, it) }
-        }
-
-        Surface(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 8.dp)
-                .size(36.dp),
-            shape = CircleShape,
-            color = Color.White,
-            shadowElevation = 4.dp,
-            onClick = { }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = null,
-                modifier = Modifier.padding(8.dp)
-            )
         }
     }
 }
@@ -377,30 +360,42 @@ fun ProductCard(navController: NavHostController, product: ProductListingModel.P
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp),
+                    .height(130.dp),
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.padding(8.dp)) {
-                Text(product.productName, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(
+                    product.productName,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    color = Color.Black
+                )
+                Spacer(Modifier.height(4.dp))
                 Text(
                     product.productRemarks,
                     fontSize = 10.sp,
                     maxLines = 2,
-                    color = Color.Gray
+                    color = Color.Black
                 )
+                Spacer(Modifier.height(4.dp))
                 Text(
-                    "${product.currency}${product.sellingPrice}",
-                    fontWeight = FontWeight.ExtraBold
+                    "${product.currency} ${product.sellingPrice}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                    color = Color.Black
                 )
+                Spacer(Modifier.height(4.dp))
                 Row {
                     Text(
-                        "${product.currency}${product.productMRP}",
+                        "${product.currency} ${product.productMRP}",
                         fontSize = 10.sp,
+                        color = Color.Gray,
                         style = androidx.compose.ui.text.TextStyle(textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough)
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        "${product.offerValues}${product.offerType}",
+                        "${product.offerValues}${if (product.offerType == "PERCENTAGE") {"%"} else {product.offerType}}",
                         color = ReddishPink,
                         fontSize = 10.sp
                     )
@@ -427,11 +422,11 @@ fun SpecialOfferSection() {
             )
             Spacer(Modifier.width(16.dp))
             Column {
-                Text("Special Offers 🤩", fontWeight = FontWeight.Bold)
+                Text("Special Offers 🤩", fontWeight = FontWeight.Bold, color = Color.Black)
                 Text(
                     "We make sure you get the offer you need at best prices",
                     fontSize = 12.sp,
-                    color = Color.Gray
+                    color = Color.Black
                 )
             }
         }
@@ -465,6 +460,9 @@ fun CategoryItem(navController: NavHostController, item: CategoryListingModel.Ca
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
             shape = CircleShape,
+            modifier = Modifier
+                .width(80.dp)
+                .height(80.dp),
             shadowElevation = 4.dp,
             color = Color.White,
             onClick = { navController.navigate("product_listing/${item.catId}") }
@@ -472,14 +470,15 @@ fun CategoryItem(navController: NavHostController, item: CategoryListingModel.Ca
             AsyncImage(
                 model = item.catImage,
                 contentDescription = "category Image",
-                modifier = Modifier
-                    .width(56.dp)
-                    .height(56.dp)
-                    .padding(8.dp),
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = item.catName, fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
+        Text(
+            text = item.catName,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(top = 8.dp),
+            color = Color.Black
+        )
     }
 }
 

@@ -34,7 +34,7 @@ fun StylishHeader() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(28.dp))
+        Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(28.dp), tint = Color.Black)
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(Modifier.width(8.dp))
